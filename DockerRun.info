@@ -8,3 +8,9 @@ docker run excel-query-app:v1
 
 # Launch an interactive shell in your Docker container
 docker run -it excel-query-app:v1 /bin/bash
+
+# install mannually in container shell
+
+pip install pandas
+pip install pyqt6
+# To exit > ctrl+D/exit
