@@ -1,22 +1,35 @@
-# Build Stage
-FROM ubuntu:latest
+# Use a base image with Python pre-installed
+FROM python:latest
 
-# Set the working directory
+# Set the working directory inside the container
 WORKDIR /app
 
-# Update package index and install Python 3, pip, Pandas, and PyQt6
-RUN apt-get update && apt-get install -y python3 python3-pip
+# Install python3-venv package
+RUN apt-get update && apt-get install -y python3-venv
 
-RUN pip3 install pandas PyQt6
+# Create a virtual environment
+RUN python -m venv venv
 
-# Display Python version
-RUN python3 --version
+# Activate the virtual environment and set the environment variables
+ENV VIRTUAL_ENV=/app/venv
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
-# Copy the current directory contents into the container at /app
-COPY . /app
+# Copy the rest of the application code into the container
+COPY . .
 
-# Run main.py when the container launches
-CMD ["python3", "Main.py"]
+# Install project dependencies (if any)
+#RUN pip install -r requirements.txt
 
-# Define the entry point
-ENTRYPOINT ["python3", "Main.py"]
+#RUN pip install --no-cache-dir --no-use-pep517 -r requirements.txt
+# This flag disables the use of PEP 517/518 build system requirements, which includes checking metadata in the pyproject.toml file.
+
+
+# Install setuptools and wheel
+RUN pip install --no-cache-dir setuptools wheel
+
+# Install project dependencies
+RUN pip install --no-cache-dir --no-use-pep517 -r requirements.txt
+
+
+# Run the Python script or start the application
+CMD ["python", "Main.py"]

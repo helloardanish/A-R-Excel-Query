@@ -1,7 +1,10 @@
 Build it:
 
-docker build -t excel-query-app .
+docker build -t excel-query-app:v1 .
 
 Run it:
 
-docker run excel-query-app
+docker run excel-query-app:v1
+
+# Launch an interactive shell in your Docker container
+docker run -it excel-query-app:v1 /bin/bash
